@@ -35,14 +35,14 @@ const callsToAction = [
   { name: 'Contact sales', href: '#', icon: PhoneIcon },
 ]
 
-export default function Example() {
+export default function NavBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
     <header className="bg-gray-900">
       <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
         <div className="flex lg:flex-1">
-          <a href="#top" className="-m-1.5 p-1.5">
+          <a href="/shop/storefront" className="-m-1.5 p-1.5">
             <span className="sr-only">Your Company</span>
             <img
               alt=""
@@ -67,8 +67,8 @@ export default function Example() {
           </a>
         </PopoverGroup>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-          <a href="#" className="text-sm/6 font-semibold text-white">
-            Log in <span aria-hidden="true">&rarr;</span>
+          <a href="/shop/profile" className="text-sm/6 font-semibold text-white">
+            Account <span aria-hidden="true">&rarr;</span>
           </a>
         </div>
       </nav>
@@ -138,7 +138,7 @@ export default function Example() {
                   href="#"
                   className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-white hover:bg-white/5"
                 >
-                  Log in
+                  Account
                 </a>
               </div>
             </div>
