@@ -2,7 +2,7 @@
 type User = {
     email: string;
 }
-export function ProfilePage({User}) {
+export function ProfilePage({User}: {User: User}) {
     return (
         <div className="bg-white overflow-hidden shadow rounded-lg border">
     <div className="px-4 py-5 sm:px-6">
@@ -28,7 +28,7 @@ export function ProfilePage({User}) {
                     Email address
                 </dt>
                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                    {User}
+                    {User.email}
                 </dd>
             </div>
             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">

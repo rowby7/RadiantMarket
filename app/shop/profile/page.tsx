@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 export default async function profile() {
     const supabase = await createClient();
     const { data, error } = await supabase.auth.getUser();
-    const userEmail = data.user?.email;
+    
     if (error || !data?.user) {
         redirect("/auth/login");
     }
@@ -14,7 +14,7 @@ export default async function profile() {
     return(
         <div>
             <NavBar />
-            <ProfilePage User={userEmail} />
+            <ProfilePage User={{ email: data.user.email || "" }} />
         </div>
     )
 }
