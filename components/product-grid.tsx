@@ -23,7 +23,11 @@ export default function ProductGrid({products} : { products: Product[]}) {
               />
               <h3 className="mt-4 text-sm text-white">{product.name}</h3>
               <p className="mt-1 text-lg font-medium text-white">{product.price}</p>
+              <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">
+              Add to Cart
+              </button>
             </a>
+            
           ))}
         </div>
       </div>
