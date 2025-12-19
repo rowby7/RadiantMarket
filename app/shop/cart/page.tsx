@@ -3,20 +3,7 @@ import CartPage from '@/components/cart-page';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 
-type CartItemRaw = {
-    id: number;
-    product_id: number;
-    user_id: string;
-    products: {
-        id: number;
-        name: string;
-        price: number;
-        image_url: string;
-        Description: string;
-    }[];
-}
-
-type CartItemTransformed = {
+type CartItem = {
     id: number;
     product_id: number;
     user_id: string;
@@ -51,23 +38,18 @@ export default async function cart(){
         `)
         .eq('user_id', user?.id);
     
-    console.log('🛒 [Cart Page] Raw cart items:', cartItemsRaw);
+    console.log('🛒 [Cart Page] Cart items from DB:', cartItemsRaw);
     
-    // Transform array to single object for each item, filtering out items without products
-    const cartItems: CartItemTransformed[] = (cartItemsRaw as CartItemRaw[] || [])
-        .filter(item => {
-            if (!item.products || !item.products[0]) {
-                console.warn('⚠️ [Cart Page] Filtering out item without products:', item);
-                return false;
-            }
-            return true;
-        })
-        .map(item => ({
-            ...item,
-            products: item.products[0]
-        }));
+    // Supabase with !inner returns products as object, not array - no transformation needed
+    const cartItems = (cartItemsRaw as CartItem[] || []).filter(item => {
+        if (!item.products || !item.products.id) {
+            console.warn('⚠️ [Cart Page] Filtering out item without valid products:', item);
+            return false;
+        }
+        return true;
+    });
     
-    console.log('🛒 [Cart Page] Transformed cart items:', cartItems);
+    console.log('🛒 [Cart Page] Valid cart items:', cartItems);
     console.log('🛒 [Cart Page] Cart items count:', cartItems?.length || 0);
     
     if (cartError) {
