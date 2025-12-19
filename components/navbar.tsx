@@ -70,6 +70,7 @@ export default function NavBar() {
           <a href="/shop/profile" className="text-sm/6 font-semibold text-white">
             Account <span aria-hidden="true">&rarr;</span>
           </a>
+          <a href="/shop/cart" className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-white hover:bg-white/5">Cart</a>
         </div>
       </nav>
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
@@ -140,6 +141,7 @@ export default function NavBar() {
                 >
                   Account
                 </a>
+                
               </div>
             </div>
           </div>
