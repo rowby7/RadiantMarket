@@ -40,8 +40,8 @@ export default async function cart(){
     
     console.log('🛒 [Cart Page] Cart items from DB:', cartItemsRaw);
     
-    // Supabase with !inner returns products as object, not array - no transformation needed
-    const cartItems = (cartItemsRaw as CartItem[] || []).filter(item => {
+    // Supabase with !inner returns products as object, not array - cast to unknown first then to CartItem[]
+    const cartItems = (cartItemsRaw as unknown as CartItem[] || []).filter(item => {
         if (!item.products || !item.products.id) {
             console.warn('⚠️ [Cart Page] Filtering out item without valid products:', item);
             return false;
