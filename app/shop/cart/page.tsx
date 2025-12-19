@@ -3,13 +3,39 @@ import CartPage from '@/components/cart-page';
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 
+type CartItemRaw = {
+    id: number;
+    product_id: number;
+    user_id: string;
+    products: {
+        id: number;
+        name: string;
+        price: number;
+        image_url: string;
+        Description: string;
+    }[];
+}
+
+type CartItemTransformed = {
+    id: number;
+    product_id: number;
+    user_id: string;
+    products: {
+        id: number;
+        name: string;
+        price: number;
+        image_url: string;
+        Description: string;
+    };
+}
+
 export default async function cart(){
     const supabase = await createClient();
     const { data: { user }, error } = await supabase.auth.getUser();
     
     console.log('🛒 [Cart Page] User ID:', user?.id);
 
-    const { data: cartItems, error: cartError } = await supabase
+    const { data: cartItemsRaw, error: cartError } = await supabase
         .from('cart_items')
         .select(`
             id,
@@ -25,6 +51,12 @@ export default async function cart(){
         `)
         .eq('user_id', user?.id);
     
+    // Transform array to single object for each item
+    const cartItems: CartItemTransformed[] = (cartItemsRaw as CartItemRaw[] || []).map(item => ({
+        ...item,
+        products: item.products[0]
+    }));
+    
     console.log('🛒 [Cart Page] Cart items fetched:', cartItems);
     console.log('🛒 [Cart Page] Cart items count:', cartItems?.length || 0);
     
@@ -35,7 +67,7 @@ export default async function cart(){
     return(
         <div>
             <NavBar />
-            <CartPage cartItems={cartItems || []}/>
+            <CartPage cartItems={cartItems}/>
         </div>
     )
 }
