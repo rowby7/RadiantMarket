@@ -51,13 +51,23 @@ export default async function cart(){
         `)
         .eq('user_id', user?.id);
     
-    // Transform array to single object for each item
-    const cartItems: CartItemTransformed[] = (cartItemsRaw as CartItemRaw[] || []).map(item => ({
-        ...item,
-        products: item.products[0]
-    }));
+    console.log('🛒 [Cart Page] Raw cart items:', cartItemsRaw);
     
-    console.log('🛒 [Cart Page] Cart items fetched:', cartItems);
+    // Transform array to single object for each item, filtering out items without products
+    const cartItems: CartItemTransformed[] = (cartItemsRaw as CartItemRaw[] || [])
+        .filter(item => {
+            if (!item.products || !item.products[0]) {
+                console.warn('⚠️ [Cart Page] Filtering out item without products:', item);
+                return false;
+            }
+            return true;
+        })
+        .map(item => ({
+            ...item,
+            products: item.products[0]
+        }));
+    
+    console.log('🛒 [Cart Page] Transformed cart items:', cartItems);
     console.log('🛒 [Cart Page] Cart items count:', cartItems?.length || 0);
     
     if (cartError) {
